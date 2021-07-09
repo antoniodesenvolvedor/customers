@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Text, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.types import DateTime
 
-from src.models.database import Base
+from app.database import Base
 
 
 class Customer(Base):
@@ -25,7 +25,18 @@ class Contact(Base):
 
     id = Column(Integer, primary_key=True)
     number = Column(String(255), nullable=False)
+    customer_id = Column(Integer, ForeignKey("customers.id"))
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
 
     owner = relationship("Customer", back_populates="contacts")
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    token_uuid = Column(String(255), unique=True, nullable=False)
+    username = Column(String(255), nullable=False)
+    password = Column(Text(), nullable=False)
+    disabled = Column(Boolean(), default=False)
+
