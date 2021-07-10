@@ -4,9 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update, delete, func
 from fastapi import HTTPException, status
 
-from app import models
-from app import schemas
-from app import security
+from app import models, schemas, security, custom_exceptions
 
 
 class CustomerService:
@@ -48,11 +46,10 @@ class CustomerService:
         self.db.commit()
 
         if not num_rows_matched:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer não encontrado")
-        else:
-            return {"message": f"Customer {customer_id} apagado com sucesso"}
+            raise custom_exceptions.customer_not_found_exception
+        return {"message": f"Customer {customer_id} apagado com sucesso"}
 
-    def update_customer(self, customer_id: int, customer: schemas.CustomerCreate):
+    def update_customer(self, customer_id: int, customer: schemas.CustomerUpdate):
 
         customer_update_values = {key: value for key, value in customer.dict().items() if value}
         if not customer_update_values:
@@ -68,9 +65,9 @@ class CustomerService:
         self.db.commit()
 
         if not num_rows_matched:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer não encontrado")
-        else:
-            return {"messange": f"Customer {customer_id} atualizado com sucesso"}
+            raise custom_exceptions.customer_not_found_exception
+
+        return {"message": f"Cliente {customer_id} atualizado com sucesso"}
 
 
     @staticmethod

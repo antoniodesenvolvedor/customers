@@ -59,20 +59,22 @@ class Token(BaseModel):
     token_type: str
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
+    token_uuid: Optional[str] = None
 
 
 class UserBase(BaseModel):
     username: str
-    password: str
+
 
 class UserCreate(UserBase):
-    pass
+    password: str
+
+class UserUpdate(BaseModel):
+    password: str
+
 
 class User(UserBase):
     id: int
-    token_uuid: str
-    disabled: Optional[bool] = None
 
     class Config:
         orm_mode = True
