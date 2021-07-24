@@ -29,6 +29,7 @@ class Contact(Base):
     customer_id = Column(Integer, ForeignKey("customers.id"))
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
+    updated_again = Column(DateTime, default=datetime.now)
 
     owner = relationship("Customer", back_populates="contacts")
 
