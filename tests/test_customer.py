@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-#teste
+#teste 2
 app = FastAPI()
 
 @app.get("/")
